@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import './Screen.css';
 
-function Screen({ userdetails }) {
+function Screen({zealid}) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [CapturedFace, setCapturedFace] = useState(null);
@@ -11,7 +11,7 @@ function Screen({ userdetails }) {
     const [isLoading, setIsLoading] = useState(false);
     const [faceborder, showfaceborder] = useState(false);
     const [moreface, setMoreface] = useState(false);
-    const [base64img , setBase64Image] = useState('')
+    const [base64img, setBase64Image] = useState('')
 
     useEffect(() => {
         if (videoRef.current) {
@@ -53,59 +53,41 @@ function Screen({ userdetails }) {
             const fullFrameCtx = fullFrameCanvas.getContext('2d');
             fullFrameCtx.drawImage(videoRef.current, 0, 0, videoWidth, videoHeight);
 
-            // Convert the canvas image to base64
-            const base64 = fullFrameCanvas.toDataURL('image/png');
-            setBase64Image(base64);
-            
-            console.log(base64);
-
-
-
 
             fullFrameCanvas.toBlob((blob) => {
                 const fullFrameImageFile = new File([blob], 'captured_full_image.png', { type: 'image/png' });
 
-                const imageUrl = URL.createObjectURL(fullFrameImageFile);
-                setCapturedFace(imageUrl);
-
-                const data = {
-                    subject_id : "Elizabeth",
-                    gallery_name : "MyGallery",
-                };
-
-                // const url = "https://api.kairos.com/enroll";
-                const headers = {
-                    'Content-Type': 'application/json', // Fixed typo here
-                    'app_id': 'd715da4c',
-                    'app_key': 'eee2b1e72a4ba1b7975e1e5a09c05542', // Ensure this is a string
-                };
+                // const imageUrl = URL.createObjectURL(fullFrameImageFile);
+                // setCapturedFace(imageUrl);
 
                 const formData = new FormData();
-                Object.keys(data).forEach(key => formData.append(key, data[key]));
-                formData.append("image", base64);
+                formData.append('Subject_id', zealid);
+                formData.append('file', fullFrameImageFile,); // Attach the image file
 
-                fetch(`https://api.kairos.com/enroll`, {
+                fetch(`http://192.168.1.25/Zeal_Event/API/kairos.php`, {
                     method: "POST",
-                    headers: headers,
                     body: formData
                 })
                     .then(response => response.json())
                     .then(data => {
                         console.log("Response data", data);
-                        if (data.status == 'success' && data.faces && data.faces.length > 0) {
+
+                        if (data.Response.face_id) {
                             setMoreface(true);
                             setCaptureCount(prevCount => {
                                 const newCount = prevCount + 1;
                                 if (newCount === 1) {
+                                    setCaptureCount(1);
 
                                 } else if (newCount === 2) {
+                                    setCaptureCount(2);
 
                                 } else if (newCount === 3) {
-
+                                    setCaptureCount(3);
                                 }
                                 return newCount;
                             });
-                        } else if (data.status === 'failure') {
+                        } else if (!data.Response.face_id) {
                             setRecapture(true);
                         }
                     })
@@ -128,7 +110,7 @@ function Screen({ userdetails }) {
                 <div className="appvide">
                     {isLoading ? (
                         CapturedFace && <img src={CapturedFace} alt="Captured face" style={{ transform: 'scaleX(-1)' }} />
-                    ) : (
+                    ) : !isLoading &&(
                         <>
                             <video
                                 ref={videoRef}

@@ -16,6 +16,7 @@ const LoginForm = () => {
   const [submited, setSubmited] = useState(false)
   const [modal, Setshowmodal] = useState(false)
   const [userexists, setUserExistsError] = useState('')
+  const [zealid, setZealid] = useState('')
 
 
   // Validate user inputs
@@ -76,7 +77,7 @@ const LoginForm = () => {
         formData.append('last_name', userdetails.lname);
         formData.append('contact', userdetails.mobileno);
         formData.append('email', userdetails.email);
-        formData.append('eid', 'test');
+        formData.append('eid', 'test1');
         formData.append('type', 'val');
 
         const response = await fetch('http://192.168.1.25/Zeal_Event/API/index.php', {
@@ -86,6 +87,7 @@ const LoginForm = () => {
 
         const data = await response.json();
         console.log('Response data:', data);
+        setZealid(data.Zeal_id);
 
         console.log(data)
 
@@ -96,6 +98,7 @@ const LoginForm = () => {
         } else {
           // Proceed if user does not exist
           Setshowmodal(true); // Show confirmation modal
+          
         }
 
       } catch (error) {
@@ -154,21 +157,12 @@ const LoginForm = () => {
         {
           userexists && (
             <>
-              <div className="modal">
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">Modal title</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body">
-                      <p>{userexists}</p>
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" className="btn btn-primary">Save changes</button>
-                    </div>
-                  </div>
+              <div className="container">
+                <div classNamename="alert alert-success" role="alert">
+                  <h4 className="alert-heading">Well done!</h4>
+                  <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                  <hr />
+                  <p className="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
                 </div>
               </div>
 
@@ -178,17 +172,19 @@ const LoginForm = () => {
 
         {
           modal && (
-            <>
-              <div>consent</div>
-              <button onClick={handleConfirm}>Ok</button>
-            </>
+            <div>
+              <h2>open the modal box</h2>
+              <button onClick={handleConfirm}>ok</button>
+
+            </div>
+
           )
         }
 
         {
           submited && (
             <>
-              <Screen userdetails={userdetails} />
+              <Screen zealid= {zealid} />
             </>
           )
         }

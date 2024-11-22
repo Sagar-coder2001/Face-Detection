@@ -83,7 +83,6 @@ const LoginForm = () => {
   const formSubmit = async (e) => {
 
     e.preventDefault();
-
     const isNameValid = validateName(userdetails.fname);
     const isLastNameValid = validateLastName(userdetails.lname);
     const isMobileValid = validateMobile(userdetails.mobileno);
@@ -210,7 +209,7 @@ const LoginForm = () => {
           {
             !userexists && !modal && !submited && (
               <div className="card ms-3 col-12 col-sm-10 col-md-8 col-lg-6">
-                <form className="row card-body">
+                <form className="row card-body" style={{ backgroundImage: `url(${Data.backgroundImage})`}}>
                   <h3 className="text-center">Facial Form</h3>
                   <div className="mb-3 col-md-12">
                     <label htmlFor="fname" className="form-label">First Name</label>

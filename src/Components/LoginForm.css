@@ -11,7 +11,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('https://media.istockphoto.com/id/817263864/vector/white-cloud-detail-in-blue-sky-vector-illustration-background-copy-space.jpg?s=612x612&w=0&k=20&c=Y4dUgv_j6zQL87chHoeBywymuFh9BN9wKMQ7X_LWYeY=');
+    /* background-image: linear-gradient(to top, rgba(250, 208, 196, 1) 0%, rgba(255, 209, 255, 1) 100%, rgba(250, 208, 196, 1) 50%); */
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -21,8 +21,6 @@ body{
     justify-content: center;
     align-items: center;
 }
-
-
 /* .container form{
     width: 500px;
     padding: 30px 0px;
@@ -39,11 +37,12 @@ body{
     font-size: 20px;
     padding: 10px;
     background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
     border-radius: 10px;
     width: 400px;
-    max-width: 90%;
+    max-width: 100%;
 }
+
 .btn-container{
     display: flex;
     justify-content: space-around;
